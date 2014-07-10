@@ -17,7 +17,7 @@ For English, see below.
 
 Vkládání obrázků nebo celých alb se provádí stejně jako standardní oEmbed vkládání: vložte jako samostatný odstavec ve vašem příspěvku URL adresu obrázku nebo celého alba hostovaného na rajce.net. Při zobrazení se pak namísto této adresy objeví příslušný obrázek nebo celé album. Podívejte se do <a href="http://wordpress.org/plugins/rajce-embed/faq/">sekce FAQ</a> pro více detailů.
 
-<strong>Upozornění</strong>: vzhled galerie (jak je zobrozena) je určen šablonou, kterou vaše konkrétní instalace WordPressu používá. Podívejte se do <a href="http://wordpress.org/plugins/rajce-embed/faq/">sekce FAQ</a> pro více detailů.
+<strong>Upozornění</strong>: vzhled galerie (jak je zobrazena) je určen šablonou, kterou vaše konkrétní instalace WordPressu používá. Podívejte se do <a href="http://wordpress.org/plugins/rajce-embed/faq/">sekce FAQ</a> pro více detailů.
 
 Tento plugin pro vkládání alb z rajce.net spolupracuje s jiným mým pluginem <a href="http://wordpress.org/plugins/gallery-slice/">Gallery Slice</a> pro zobrazování náhledu alba na domovské stránce a archivech, doporučuji vyzkoušet.
 
