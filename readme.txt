@@ -42,7 +42,7 @@ Základní používání pluginu funguje tak, že vložíte do příspěvku jako
 
 zobrazí celou galerii uloženou na této adrese. Naproti tomu
 
-<code>http://ukazka.rajce.idnes.cz/Brno_v_noci_-_ukazka_velkeho_rozliseni#DSC_2804.jpg</code>
+<code>http://ukazka.rajce.net/Brno_v_noci_-_ukazka_velkeho_rozliseni#DSC_2804.jpg</code>
 
 vloží do příspěvku jeden obrázek z této galerie.
 
