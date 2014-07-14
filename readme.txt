@@ -69,7 +69,7 @@ Vložené obrázky i galerie mohou také zobrazovat popisky fotek z rajce.net. T
 * buď bez hodnoty nebo caption="on" — zapne zobrazování popisku(ů) pro tento vložený objekt; jako popisek je použit název fotky z rajce.net, pokud není vyplněný, pak popis fotky z rajce.net, pokud není vyplněný, pak jméno souboru s fotkou
 * caption="off" — vypne zobrazování popisku(ů) pro tento vložený objekt a to i v takovém případě, kdy je zobrazování popisků zapnuto v Nastavení → Média
 * caption="name" — zapne zobrazování popisku(ů) pro tento vložený objekt; jako popisek je použit název fotky z rajce.net, pokud není vyplněn, pak se nezobrazí žádný popisek.
-* caption="name" — zapne zobrazování popisku(ů) pro tento vložený objekt; jako popisek je použit popis fotky z rajce.net, pokud není vyplněn, pak se nezobrazí žádný popisek.
+* caption="desc" — zapne zobrazování popisku(ů) pro tento vložený objekt; jako popisek je použit popis fotky z rajce.net, pokud není vyplněn, pak se nezobrazí žádný popisek.
 * caption="vlastní text" — zapne zobrazování popisku pro tento vložený objekt; jako popisek je použit vlastní text z tohoto atributu. Tato volba funguje pouze pro vkládané obrázky, nefunguje pro vkládané galerie
 
 Příklad:
