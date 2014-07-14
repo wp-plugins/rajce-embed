@@ -48,7 +48,7 @@ vloží do příspěvku jeden obrázek z této galerie.
 
 Zobrazení vloženého obrázku je jednoduché -- pokud je obrázek větší než šírka obsahu (příspěvku), pak se obrázek "zmáčkne" na tuto šířku, při kliknutí na něj se zobrazí v plné velikosti. Pokud na webu používáte některý z mnoha různých LightBoxů, měl by se automaticky ten využít pro zobrazení plné velikosti.
 
-Složitější je to se zobrazením galerie: vložené album je totiž naformátováno stejně jako výchozí galerie WordPressu, měl by se tedy na něj aplikovat styl, který používá vámi používaná šablona. Jenže ani tak to není úplně jednoduché. Výsledek jsem vyzkoušel na pěti výchozích šablonách WordPressu twentyten až twentyfourteen, zde jsou výsledky (vezměme to odzadu, tedy od nejnovější šablony twentyfourteen):
+Složitější je to se zobrazením galerie: vložené album je totiž naformátováno stejně jako výchozí galerie WordPressu, měl by se tedy na něj aplikovat styl, který používá vámi používaná šablona. To je záměr — album vložené z Rajčete má vypadat stejně jako ostatní alba ve vašem WordPressu. Jenže ono to není až tak úplně jednoduché. Výsledek jsem vyzkoušel na pěti výchozích šablonách WordPressu twentyten až twentyfourteen, zde jsou výsledky (vezměme to odzadu, tedy od nejnovější šablony twentyfourteen):
 
 * twentyfourteen — vše funguje nejlépe, jak je možné; náhledy na obrázky jsou zobrazeny ve velikosti, jakou máte zadánu v Nastavení → Média → Velikost náhledu; pokud máte zapnutu volbu <em>Oříznout náhled podle přesných rozměrů</em>, pak je náhled naformátován tak, že zabere celou tuto velikost (obrázek není deformován, proporce jsou zachovány, ale to, co se nevejde, je oříznuto).
 * twentythirteen — situace je stejná jako u twentyfourteen, vše funguje tak, jak má
