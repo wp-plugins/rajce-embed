@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.0
+Version: 1.1
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -12,7 +12,7 @@ License: WTFPL 2.0
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 class Rajce_embed {
-  const version = "1.0";
+  const version = "1.1";
 
   public function __construct() {
     register_activation_hook(__FILE__, array($this, 'activate'));
@@ -65,7 +65,7 @@ class Rajce_embed {
   }
 
   private static $http_cache = array();
-  private function get_http($URL) {
+  private static function get_http($URL) {
     if (!isset($http_cache[$URL]))
       $http_cache[$URL] = wp_remote_fopen($URL);
     return $http_cache[$URL];
@@ -77,6 +77,7 @@ class Rajce_embed {
     $html = Rajce_embed::get_http($matches[0]);
     if($html !== false) {
       $dom = new DOMDocument();
+      libxml_use_internal_errors(true);
       if ($dom->loadHTML($html) !== false) {
 
         if (isset($matches[3]) && $matches[3] != "") {
@@ -157,6 +158,7 @@ class Rajce_embed {
           }
         }
       }
+      libxml_clear_errors();
     }
 
     return apply_filters('oembed_result', $embed, $url, '');
@@ -168,11 +170,12 @@ class Rajce_embed {
     $html = Rajce_embed::get_http($album_URL);
     if($html !== false) {
       $dom = new DOMDocument();
+      libxml_use_internal_errors(true);
       if ($dom->loadHTML($html) !== false) {
         $html5 = current_theme_supports('html5', 'gallery');
         $float = is_rtl() ? 'right' : 'left';
 
-        extract(Rajce_embed::shortcode_atts($atts));
+        extract(Rajce_embed::shortcode_atts($attr));
 
         $columns = intval($columns);
         $itemwidth = $columns > 0 ? floor(100/$columns) : 100;
@@ -268,6 +271,7 @@ class Rajce_embed {
         }
         $embed .= "</div>\n";
       }
+      libxml_clear_errors();
     }
     return $embed;
   }
@@ -278,8 +282,9 @@ class Rajce_embed {
     $html = Rajce_embed::get_http($album_URL);
     if($html !== false) {
       $dom = new DOMDocument();
+      libxml_use_internal_errors(true);
       if ($dom->loadHTML($html) !== false) {
-        extract(Rajce_embed::shortcode_atts($atts));
+        extract(Rajce_embed::shortcode_atts($attr));
         $size_class = sanitize_html_class($size);
         $selector = "gallery-rajce-{$instance}-mini-preview";
         list($itemtag, $captiontag, $icontag) = Rajce_embed::validate_gallery_tags($itemtag, $captiontag, $icontag);
@@ -325,7 +330,7 @@ class Rajce_embed {
 
         $spans = $dom->getElementsByTagName('span');
         foreach ($spans as $span) {
-          if ($span->getAttribute('style') == mediaCount) {
+          if ($span->getAttribute('style') == 'mediaCount') {
             $output .= '<span class="media-count">' . $span->nodeValue . '</span>';
             break;
           }
@@ -343,6 +348,7 @@ class Rajce_embed {
         $output .= "</div>";
 
       }
+      libxml_clear_errors();
     }
 
     return $output;
@@ -400,7 +406,7 @@ class Rajce_embed {
           'itemtag'    => $html5 ? 'figure'     : 'dl',
           'icontag'    => $html5 ? 'div'        : 'dt',
           'captiontag' => $html5 ? 'figcaption' : 'dd'
-        ), $attr, 'gallery');
+        ), $atts, 'gallery');
   }
 
   private static function validate_gallery_tags($itemtag, $captiontag, $icontag) {
