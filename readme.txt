@@ -3,7 +3,7 @@ Contributors: honza.skypala
 Donate link: http://www.honza.info
 Tags: gallery, image, images, embed, oembed
 Requires at least: 3.9
-Tested up to: 3.9.2
+Tested up to: 4.0
 Stable tag: 1.1
 License: WTFPL license applies
 
