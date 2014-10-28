@@ -4,7 +4,7 @@ Donate link: http://www.honza.info
 Tags: gallery, image, images, embed, oembed
 Requires at least: 3.9
 Tested up to: 4.0
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: WTFPL license applies
 
 Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
@@ -86,6 +86,8 @@ Pokud jste tedy dosavad používali plugin <em>WP Rajče</em>, deaktivujte ho a 
 
 == Changelog ==
 
+= 1.1.1 =
+* embed handler registered even in admin mode, necessary for use via ajax (standard WordPress ajax is running with is_admin() == true, even on frontend)
 = 1.1 =
 * Bug-fixes and warning-fixes
 = 1.0 =
