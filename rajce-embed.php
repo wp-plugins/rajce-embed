@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.1.1
+Version: 1.2
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -12,7 +12,7 @@ License: WTFPL 2.0
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 class Rajce_embed {
-  const version = "1.1.1";
+  const version = "1.2";
 
   public function __construct() {
     register_activation_hook(__FILE__, array($this, 'activate'));
@@ -53,13 +53,23 @@ class Rajce_embed {
 
   static function enqueue_styles() {
     if (current_theme_supports('html5', 'gallery') && get_option("thumbnail_crop", 1) != "") {
-      wp_register_style('rajce-html5-gallery', plugins_url('html5-gallery.css', __FILE__));
+      wp_register_style('rajce-html5-gallery', plugins_url('css/html5-gallery.css', __FILE__));
       wp_enqueue_style('rajce-html5-gallery');
     }
-    wp_register_style('rajce-mini-preview-css', plugins_url('mini-preview.css', __FILE__));
+    wp_register_style('rajce-mini-preview-css', plugins_url('css/mini-preview.css', __FILE__));
     wp_register_script('rajce-mini-preview-js', plugins_url('mini-preview.js', __FILE__));
     wp_enqueue_style('rajce-mini-preview-css');
     wp_enqueue_script('rajce-mini-preview-js');
+
+    $theme = wp_get_theme();
+    if (file_exists(__DIR__ . "/css/" . $theme->get_template() . ".css")) {
+      wp_register_style('rajce_embed_theme', plugins_url("css/" . $theme->get_template() . ".css", __FILE__));
+      wp_enqueue_style('rajce_embed_theme');
+    }
+    if ($theme->get_template() != $theme->get_stylesheet() && file_exists(__DIR__ . "/css/" . $theme->get_stylesheet() . ".css")) {
+      wp_register_style('rajce_embed_child_theme', plugins_url("css/" . $theme->get_stylesheet() . ".css", __FILE__));
+      wp_enqueue_style('rajce_embed_child_theme');
+    }
   }
 
   private static $http_cache = array();
@@ -308,8 +318,10 @@ class Rajce_embed {
 
         $thumb_url = str_replace('/images/', '/thumb/', $image_URL);
 
+        $link = in_the_loop() ? get_permalink() : $album_URL;
+
         $output .= $gallery_div;
-        $image_output = sprintf('<a href="%1$s"><img src="%2$s" alt="%3$s" width="%4$d" height="%5$d"/></a>', get_permalink(), $thumb_url, $image_filename, $target_width, $target_height);
+        $image_output = sprintf('<a href="%1$s"><img src="%2$s" alt="%3$s" width="%4$d" height="%5$d"/></a>', $link, $thumb_url, $image_filename, $target_width, $target_height);
 
         $output .= "<{$itemtag} class='gallery-item'>";
         $output .= "
@@ -320,10 +332,7 @@ class Rajce_embed {
 
         $output .= '<span class="gallery-meta">';
         $output .= '<span class="gallery-name">';
-        // link to full WordPress post, ajax to switch to the full gallery:
-        $output .= sprintf('<a href="%1$s" class="link-to-wordpress">%2$s</a>', get_permalink(), $dom->getElementById("albumName")->nodeValue); // name of the album on rajce.net
-        // link to original gallery on rajce.net
-        $output .= sprintf('<a href="%1$s" class="link-to-rajce">%2$s</a>', $album_URL, $dom->getElementById("albumName")->nodeValue); // name of the album on rajce.net
+        $output .= sprintf('<a href="%1$s">%2$s</a>', $link, $dom->getElementById("albumName")->nodeValue);
         $output .= '</span>';
 
         $spans = $dom->getElementsByTagName('span');
