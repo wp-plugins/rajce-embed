@@ -92,7 +92,7 @@ class Rajce_embed {
           // we are embedding just one image
           $as = $dom->getElementsByTagName('a');
           foreach ($as as $a) {
-            if ($a->getAttribute('class') == 'photoThumb' && substr($a->getAttribute('href'), -strlen($matches[3])) == $matches[3]) {
+            if (preg_match('/(^|\s)photoThumb($|\s)/', $a->getAttribute('class')) && substr($a->getAttribute('href'), -strlen($matches[3])) == $matches[3]) {
               list($width, $height) = Rajce_embed::image_size($dom, $matches[3]);
               $iwidth = $width;
               $iheight = $height;
