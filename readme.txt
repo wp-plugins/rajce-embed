@@ -4,7 +4,7 @@ Donate link: http://www.honza.info
 Tags: gallery, image, images, embed, oembed
 Requires at least: 3.9
 Tested up to: 4.1
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: WTFPL license applies
 
 Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
@@ -48,10 +48,11 @@ vloží do příspěvku jeden obrázek z této galerie.
 
 Zobrazení vloženého obrázku je jednoduché -- pokud je obrázek větší než šírka obsahu (příspěvku), pak se obrázek "zmáčkne" na tuto šířku, při kliknutí na něj se zobrazí v plné velikosti. Pokud na webu používáte některý z mnoha různých LightBoxů, měl by se automaticky ten využít pro zobrazení plné velikosti.
 
-Složitější je to se zobrazením galerie: vložené album je totiž naformátováno stejně jako výchozí galerie WordPressu, měl by se tedy na něj aplikovat styl, který používá vámi používaná šablona. To je záměr — album vložené z Rajčete má vypadat stejně jako ostatní alba ve vašem WordPressu. Jenže ono to není až tak úplně jednoduché. Výsledek jsem vyzkoušel na pěti výchozích šablonách WordPressu twentyten až twentyfourteen, zde jsou výsledky (vezměme to odzadu, tedy od nejnovější šablony twentyfourteen):
+Složitější je to se zobrazením galerie: vložené album je totiž naformátováno stejně jako výchozí galerie WordPressu, měl by se tedy na něj aplikovat styl, který používá vámi používaná šablona. To je záměr — album vložené z Rajčete má vypadat stejně jako ostatní alba ve vašem WordPressu. Jenže ono to není až tak úplně jednoduché. Výsledek jsem vyzkoušel na pěti výchozích šablonách WordPressu twentyten až twentyfifteen, zde jsou výsledky (vezměme to odzadu, tedy od nejnovější šablony twentyfifteen):
 
-* twentyfourteen — vše funguje nejlépe, jak je možné; náhledy na obrázky jsou zobrazeny ve velikosti, jakou máte zadánu v Nastavení → Média → Velikost náhledu; pokud máte zapnutu volbu <em>Oříznout náhled podle přesných rozměrů</em>, pak je náhled naformátován tak, že zabere celou tuto velikost (obrázek není deformován, proporce jsou zachovány, ale to, co se nevejde, je oříznuto).
-* twentythirteen — situace je stejná jako u twentyfourteen, vše funguje tak, jak má
+* twentyfifteen — vše funguje nejlépe, jak je možné; náhledy na obrázky jsou zobrazeny ve velikosti, jakou máte zadánu v Nastavení → Média → Velikost náhledu; pokud máte zapnutu volbu <em>Oříznout náhled podle přesných rozměrů</em>, pak je náhled naformátován tak, že zabere celou tuto velikost (obrázek není deformován, proporce jsou zachovány, ale to, co se nevejde, je oříznuto).
+* twentyfourteen — situace je stejná jako u twentyfifteen, vše funguje tak, jak má
+* twentythirteen — situace je stejná jako u twentyfifteen, vše funguje tak, jak má
 * twentytwelve — šablona používá starší verzi HTML kódu pro zobrazování galerie, proto není podporována varianta, aby v případě zapnuté volby Nastavení → Média → <em>Oříznout náhled podle přesných rozměrů</em> obrázky zabíraly celou velikost nastavení pro náhledy. Jinak se galerie zobrazuje v pořádku
 * twentyeleven — zatímco při zobrazení samostatného příspěvku je galerie zobrazena v pořádku (byť tak jako v šabloně twentytwelve), při zobrazení homepage nebo archivu, pokud je formát příspěveku nastaven na "Galerie", pak se vložená galerie vůbec neukáže. Pokud je ovšem ponechán výchozí formát "Standard", galerie je zobrazena i na homepage a archivech. Je to z toho důvodu, že šablona používá pro zobrazení formátu "Galerie" na homepagi a v archivech svůj vlastní specifický kód, který o galeriích vkládaných z rajčete nic neví (a ani tento specifický kód galerie nelze napíchnout vlastním hookem, abych to ošetřil). Aby galerie byla zobrazována i zde, bylo by zapotřebí upravit šablonu
 * twentyten — situace úplně stejná jako u šablony twentyeleven
@@ -86,6 +87,10 @@ Pokud jste tedy dosavad používali plugin <em>WP Rajče</em>, deaktivujte ho a 
 
 == Changelog ==
 
+= 1.2.1 =
+* improved compatibility with TwentyFifteen theme (WordPress 4.1); one universal css to cover twentythirteen, twentyfourteen and twentyfifteen
+* better css styling of gallery (gallery was not on exact center in content)
+* bugfix: if embedding single picture, which is also thumbnail of whole album, it did not work
 = 1.2 =
 * compatibility with TwentyFifteen theme (WordPress 4.1)
 = 1.1.1 =

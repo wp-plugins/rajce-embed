@@ -1,6 +1,10 @@
 ﻿div.gallery-embed-rajce-mini-preview {
+  font-size: inherit;
   display: none;
-//  display: table;
+}
+
+.gallery-embed-rajce-mini-preview .gallery-item {
+  width: auto;
 }
 
 div.gallery-embed-rajce-mini-preview .gallery-item,
@@ -30,6 +34,6 @@ div.gallery-embed-rajce-mini-preview span.gallery-description {
   color: #666;
 }
 
-div.gallery-embed-rajce-mini-preview dl.gallery-item {
+div.gallery-embed-rajce-mini-preview .gallery-item {
   padding-right: 0.5em;
 }

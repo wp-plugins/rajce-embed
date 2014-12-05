@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.2
+Version: 1.2.1
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -12,7 +12,7 @@ License: WTFPL 2.0
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 class Rajce_embed {
-  const version = "1.2";
+  const version = "1.2.1";
 
   public function __construct() {
     register_activation_hook(__FILE__, array($this, 'activate'));
@@ -53,8 +53,9 @@ class Rajce_embed {
 
   static function enqueue_styles() {
     if (current_theme_supports('html5', 'gallery') && get_option("thumbnail_crop", 1) != "") {
-      wp_register_style('rajce-html5-gallery', plugins_url('css/html5-gallery.css', __FILE__));
-      wp_enqueue_style('rajce-html5-gallery');
+      wp_enqueue_style('rajce-html5-gallery', plugins_url('css/html5-gallery.css', __FILE__));
+    } else {
+      wp_enqueue_style('rajce-dl-dt-gallery', plugins_url('css/dl-dt-gallery.css', __FILE__));
     }
     wp_register_style('rajce-mini-preview-css', plugins_url('css/mini-preview.css', __FILE__));
     wp_register_script('rajce-mini-preview-js', plugins_url('mini-preview.js', __FILE__));
@@ -256,17 +257,11 @@ class Rajce_embed {
           }
 
           $image_output = sprintf('<a href="%1$s"><img src="%2$s" alt="%3$s" %6$s width="%4$d" height="%5$d"/></a>', $img_url, $thumb_url, $description, $target_width, $target_height, $captions ? "" : 'title="' . $description . '"');
-
+          
           $embed .= "<{$itemtag} class='gallery-item'>";
-          $embed .= "
-            <{$icontag} class='gallery-icon {$orientation}'>
-              $image_output
-            </{$icontag}>";
+          $embed .= "<{$icontag} class='gallery-icon {$orientation}'>$image_output</{$icontag}>";
       		if ($captions && $captiontag && $description) {
-      			$embed .= "
-      				<{$captiontag} class='wp-caption-text gallery-caption'>
-      				" . wptexturize($description) . "
-      				</{$captiontag}>";
+      			$embed .= "<{$captiontag} class='wp-caption-text gallery-caption'>" . wptexturize($description) . "</{$captiontag}>";
       		}
           $embed .= "</{$itemtag}>";
           if (!$html5 && $columns > 0 && ++$i % $columns == 0) {
@@ -372,15 +367,12 @@ class Rajce_embed {
       $html5 = current_theme_supports('html5', 'gallery');
       list($wp_thumb_size_w, $wp_thumb_size_h) = Rajce_embed::options_thumb_size();
       if ($html5 && get_option("thumbnail_crop", 1) != "") {
-        return "
-        <style type='text/css'>
-          div.gallery-embed-rajce .gallery-item,
-          div.gallery-embed-rajce-mini-preview .gallery-item {
+        return "<style type='text/css'>
+          div[class*=\"gallery-embed-rajce\"] .gallery-icon {
             width: {$wp_thumb_size_w}px;
             height: {$wp_thumb_size_h}px;
           }
-        </style>
-        ";
+        </style>";
       }
     }
     return "";
