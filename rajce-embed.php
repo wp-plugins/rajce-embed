@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.2.1
+Version: 1.2.2
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -338,9 +338,12 @@ class Rajce_embed {
           }
         }
 
-        $tags = $dom->getElementById("albumCategories")->nodeValue;
-        if ($tags != "")
-          $output .= '<span class="gallery-tags">' . $tags . '</span>'; // tags
+        $albumCategories = $dom->getElementById("albumCategories");
+        if ($albumCategories != NULL) {
+          $tags = $albumCategories->nodeValue;
+          if ($tags != "")
+            $output .= '<span class="gallery-tags">' . $tags . '</span>'; // tags
+        }
         $desc = $dom->getElementById("albumDescription")->nodeValue;
         if ($desc != "")
           $output .= '<span class="gallery-description">' . $desc . '</span>'; // tags
