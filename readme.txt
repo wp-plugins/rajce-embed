@@ -4,7 +4,7 @@ Donate link: http://www.honza.info
 Tags: gallery, image, images, embed, oembed
 Requires at least: 4.0
 Tested up to: 4.1
-Stable tag: 1.3
+Stable tag: 1.4
 License: WTFPL license applies
 
 Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
@@ -79,6 +79,12 @@ Příklad:
 
 Popisky jsou zobrazeny tak, jak je zobrazuje šablona, kterou používáte na Vaší instalaci WordPressu.
 
+Vkládání galerie také umožňuje vypustit obrázek, který je zvolený jako náhled (hlavní obrázek) celého alba. Toto je možné buď nastavit globálně v Nastavení → Média, pak to je platné ve všech vkládaných galerií z Rajčete; případně, pokud je možnost globálně vypnutá, lze to specifikovat atributem omitalbumcover u jednotlivých galerií, pro které to chcete použít.
+
+Příklad:
+
+<code>[embed omitalbumcover]http://ukazka.rajce.net/Brno_v_noci_-_ukazka_velkeho_rozliseni[/embed]</code>
+
 Při vložení galerie plugin vkládá do kódu ještě mini-náhled (jeden obrázek reprezentující celou galerii, popis, počet fotek, rozbalení na plnou galerii). Tento mini-náhled je standardně skrytý a vůbec se nezobrazuje. Pokročilí tvůrci šablon/webů ho mohou využít například při tvorbě responsivních webů, mobilních verzí nebo vkládání galerie do chatu. Pro jeho využití použijte detailnější specifikaci CSS selectoru než je výchozí, div s mini-náhledem používá třídu gallery-embed-rajce-mini-preview. Pokud dáte div.gallery-embed-rajce-mini-preview display: block, umístí se popisky zarovnané nahoru k obrázku, pokud použijete display: table, umístí se popisky vertikálně vycentrované.
 
 Plugin <em>Rajce embed</em> nabízí také zpětnou kompatibilitu se starším pluginem <a href="http://wordpress-rajce.ic.cz/">Rajče WP</a>, to znamená, že pokud jste dosavad používali plugin <em>Rajče WP</em>, můžete ho nahradit pluginem <em>Rajce embed</em> a plugin <em>Rajče WP</em> deaktivovat. Nicméně, aby zpětná kompatibilita fungovala, musíte ještě aktivovat malý plugin <em>Zpětná kompatibilita Rajce embed s WP Rajče</em>, který je součástí tohoto pluginu. Tato zpětná kompatibilita je oddělena do samostatného pluginu, aby nezatěžovala uživatele, kteří ji nevyužijí (nezatěžováním mám na mysli zpracovávání příspěvku na straně serveru).
@@ -87,6 +93,9 @@ Pokud jste tedy dosavad používali plugin <em>WP Rajče</em>, deaktivujte ho a 
 
 == Changelog ==
 
+= 1.4 =
+* enhancement — possibility to omit album cover image from the displayed gallery
+* fix — default values for custom thumbnail size
 = 1.3 =
 * enhancement — new option to specify custom thumbnail size
 = 1.2.2 =

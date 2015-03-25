@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.3
+Version: 1.4
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -12,7 +12,7 @@ License: WTFPL 2.0
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 class Rajce_embed {
-  const version = "1.2.1";
+  const version = "1.4";
 
   public function __construct() {
     register_activation_hook(__FILE__, array($this, 'activate'));
@@ -25,11 +25,20 @@ class Rajce_embed {
   public function activate() {
     add_option('rajce_embed_image_captions', '');
     add_option('rajce_embed_gallery_captions', '');
+    add_option('rajce_embed_thumbnail_size_w', 100);
+    add_option('rajce_embed_thumbnail_size_h', 100);
+    add_option('rajce_embed_thumbnail_crop', get_option("thumbnail_crop", 1));
+    add_option('rajce_embed_omit_album_cover', '');
     update_option('rajce_embed_version', self::version); // store plug-in version, if we later need to provide specific actions during upgrade
   }
 
   public function check_plugin_update() {
     $registered_version = get_option('rajce_embed_version', '0');
+    if (version_compare($registered_version, '1.3', '<')) {
+      add_option('rajce_embed_thumbnail_size_w', 100);
+      add_option('rajce_embed_thumbnail_size_h', 100);
+      add_option('rajce_embed_thumbnail_crop', get_option("thumbnail_crop", 1));
+    }
     if (version_compare($registered_version, self::version, '<')) {
       update_option('rajce_embed_version', self::version);
     }
@@ -43,10 +52,12 @@ class Rajce_embed {
     register_setting('media', 'rajce_embed_thumbnail_size_w');
     register_setting('media', 'rajce_embed_thumbnail_size_h');
     register_setting('media', 'rajce_embed_thumbnail_crop');
+    register_setting('media', 'rajce_embed_omit_album_cover');
     add_settings_section('rajce_embed_section', __('Rajče.net embed', 'rajce_embed'), '', 'media');
     add_settings_field('rajce_embed_image_captions', __('Popisky obrázků', 'rajce_embed'), 'Rajce_embed::option', 'media', 'rajce_embed_section', array('option'=>"image_captions", 'description'=>"Zobrazovat popisky u obrázků vkládaných z rajce.net (rajce.idnes.cz)"));
     add_settings_field('rajce_embed_gallery_captions', __('Popisky galerií', 'rajce_embed'), 'Rajce_embed::option', 'media', 'rajce_embed_section', array('option'=>"gallery_captions", 'description'=>"Zobrazovat popisky u galerií vkládaných z rajce.net (rajce.idnes.cz)"));
     add_settings_field('rajce_embed_thumb_size', __('Thumbnail size'), 'Rajce_embed::option_thumb', 'media', 'rajce_embed_section');
+    add_settings_field('rajce_embed_omit_album_cover', __('Vynechat náhled alba', 'rajce_embed'), 'Rajce_embed::option', 'media', 'rajce_embed_section', array('option'=>"omit_album_cover", 'description'=>"Vynechávat ze zobrazovaných alb obrázek zvolený jako náhled alba"));
   }
 
   public static function option(array $args) {
@@ -78,7 +89,7 @@ class Rajce_embed {
       . '<script>jQuery(document).ready(function($){$("#rajce_embed_thumb_default_yes").click(function(){$("#rajce_embed_thumbnail_size").slideUp()});$("#rajce_embed_thumb_default_no").click(function(){$("#rajce_embed_thumbnail_size").slideDown()});});</script>'
     );
   }
-  
+
   private static function crop_thumbs() {
     $crop = get_option("thumbnail_crop", 1);
     $thumb_default = get_option("rajce_embed_thumb_default", 'yes');
@@ -183,10 +194,13 @@ class Rajce_embed {
 
         } else {
           // we are embedding whole album
+           $omit_album_cover = (get_option(rajce_embed_omit_album_cover, '') != '') || in_array('omitalbumcover', array_map('strtolower', $attr));
           $images = array();
           $as = $dom->getElementsByTagName('a');
           foreach ($as as $a) {
-            if (strpos($a->getAttribute('class'), 'photoThumb') !== false) {
+            if ($omit_album_cover && (strpos($a->getAttribute('class'), 'albumCoverThumb') !== false)) {
+              // we do not include the album cover into the gallery, if the user has specified so
+            } else if (strpos($a->getAttribute('class'), 'photoThumb') !== false) {
               $img_url = $a->getAttribute('href');
               $filename = substr($img_url, strrpos($img_url, '/') + 1);
               $images[$filename] = $img_url;
@@ -408,7 +422,7 @@ class Rajce_embed {
       if (is_numeric($thumb_size_h))
         $h = $thumb_size_h;
     }
-    
+
     return array($w, $h);
   }
 
