@@ -39,16 +39,44 @@ class Rajce_embed {
     self::check_plugin_update();
     register_setting('media', 'rajce_embed_image_captions');
     register_setting('media', 'rajce_embed_gallery_captions');
+    register_setting('media', 'rajce_embed_thumb_default');
+    register_setting('media', 'rajce_embed_thumbnail_size_w');
+    register_setting('media', 'rajce_embed_thumbnail_size_h');
+    register_setting('media', 'rajce_embed_thumbnail_crop');
     add_settings_section('rajce_embed_section', __('Rajče.net embed', 'rajce_embed'), '', 'media');
     add_settings_field('rajce_embed_image_captions', __('Popisky obrázků', 'rajce_embed'), 'Rajce_embed::option', 'media', 'rajce_embed_section', array('option'=>"image_captions", 'description'=>"Zobrazovat popisky u obrázků vkládaných z rajce.net (rajce.idnes.cz)"));
     add_settings_field('rajce_embed_gallery_captions', __('Popisky galerií', 'rajce_embed'), 'Rajce_embed::option', 'media', 'rajce_embed_section', array('option'=>"gallery_captions", 'description'=>"Zobrazovat popisky u galerií vkládaných z rajce.net (rajce.idnes.cz)"));
+    add_settings_field('rajce_embed_thumb_size', __('Thumbnail size'), 'Rajce_embed::option_thumb', 'media', 'rajce_embed_section');
   }
-  
+
   public static function option(array $args) {
     echo(
       '<input type="checkbox" name="rajce_embed_' . $args['option'] . '" id="rajce_embed_' . $args['option'] . '" ' . checked('on', get_option("rajce_embed_" . $args['option'], ''), false) . '" value="on" /> '
       . __($args['description'], 'rajce_embed')
      );
+  }
+
+  public static function option_thumb(array $args) {
+    $thumb_default = get_option("rajce_embed_thumb_default", 'yes');
+    $thumb_size_w  = get_option("rajce_embed_thumbnail_size_w", '');
+    $thumb_size_h  = get_option("rajce_embed_thumbnail_size_h", '');
+    $thumb_crop    = get_option("rajce_embed_thumbnail_crop", '');
+    echo(
+      '<input type="radio" name="rajce_embed_thumb_default" id="rajce_embed_thumb_default_yes" value="yes"' . ($thumb_default == 'yes' ? ' checked' : '') . '>'
+      . __('Výchozí velikost, stejná jako pro nativní WordPress galerie; definováno nahoře na této stránce', 'rajce_embed')
+      . '<br />'
+      . '<input type="radio" name="rajce_embed_thumb_default" id="rajce_embed_thumb_default_no" value="no"' . ($thumb_default != 'yes' ? ' checked' : '') . '>'
+      . __('Vlastní velikost', 'rajce_embed')
+      . '<div id="rajce_embed_thumbnail_size"' . ($thumb_default == 'yes' ? ' style="display:none"' : '') . '>
+          <label for="rajce_embed_thumbnail_size_w">' . __('Width') . '</label>
+          <input name="rajce_embed_thumbnail_size_w" type="number" step="1" min="0" id="rajce_embed_thumbnail_size_w" value="' . $thumb_size_w . '" class="small-text">
+          <label for="rajce_embed_thumbnail_size_h">' . __('Height') . '</label>
+          <input name="rajce_embed_thumbnail_size_h" type="number" step="1" min="0" id="rajce_embed_thumbnail_size_h" value="' . $thumb_size_h . '" class="small-text"><br>
+          <input name="rajce_embed_thumbnail_crop" type="checkbox" id="rajce_embed_thumbnail_crop" value="1"' . ($thumb_crop == "1" ? 'checked="checked"' : '') . '>
+          <label for="rajce_embed_thumbnail_crop">' . __('Crop thumbnail to exact dimensions (normally thumbnails are proportional)') . '</label>
+        </div>'
+      . '<script>jQuery(document).ready(function($){$("#rajce_embed_thumb_default_yes").click(function(){$("#rajce_embed_thumbnail_size").slideUp()});$("#rajce_embed_thumb_default_no").click(function(){$("#rajce_embed_thumbnail_size").slideDown()});});</script>'
+    );
   }
 
   static function enqueue_styles() {
@@ -220,7 +248,7 @@ class Rajce_embed {
 
         $gallery_div = "<div id='$selector' class='gallery gallery-embed-rajce galleryid-{$id} gallery-columns-{$columns} gallery-size-{$size_class}'>";
         $embed .= apply_filters('gallery_style', $gallery_style . $gallery_div);
-        
+
         $captions = get_option('rajce_embed_gallery_captions', '') == 'on';
         if (in_array("captions", $attr)) {
           $captions = true;
@@ -257,12 +285,12 @@ class Rajce_embed {
           }
 
           $image_output = sprintf('<a href="%1$s"><img src="%2$s" alt="%3$s" %6$s width="%4$d" height="%5$d"/></a>', $img_url, $thumb_url, $description, $target_width, $target_height, $captions ? "" : 'title="' . $description . '"');
-          
+
           $embed .= "<{$itemtag} class='gallery-item'>";
           $embed .= "<{$icontag} class='gallery-icon {$orientation}'>$image_output</{$icontag}>";
-      		if ($captions && $captiontag && $description) {
-      			$embed .= "<{$captiontag} class='wp-caption-text gallery-caption'>" . wptexturize($description) . "</{$captiontag}>";
-      		}
+          if ($captions && $captiontag && $description) {
+            $embed .= "<{$captiontag} class='wp-caption-text gallery-caption'>" . wptexturize($description) . "</{$captiontag}>";
+          }
           $embed .= "</{$itemtag}>";
           if (!$html5 && $columns > 0 && ++$i % $columns == 0) {
             $embed .= '<br style="clear: both" />';
