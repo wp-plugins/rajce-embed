@@ -2,9 +2,9 @@
 Contributors: honza.skypala
 Donate link: http://www.honza.info
 Tags: gallery, image, images, embed, oembed
-Requires at least: 3.9
+Requires at least: 4.0
 Tested up to: 4.1
-Stable tag: 1.2.2
+Stable tag: 1.3
 License: WTFPL license applies
 
 Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
@@ -87,8 +87,10 @@ Pokud jste tedy dosavad používali plugin <em>WP Rajče</em>, deaktivujte ho a 
 
 == Changelog ==
 
+= 1.3 =
+* enhancement — new option to specify custom thumbnail size
 = 1.2.2 =
-* fix -- rajce html source now may ommit tag with id "albumCategories"
+* fix — rajce html source now may ommit tag with id "albumCategories"
 = 1.2.1 =
 * improved compatibility with TwentyFifteen theme (WordPress 4.1); one universal css to cover twentythirteen, twentyfourteen and twentyfifteen
 * better css styling of gallery (gallery was not on exact center in content)

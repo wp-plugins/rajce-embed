@@ -3,7 +3,7 @@
 Plugin Name: Zpětná kompatibilita Rajce embed s WP Rajče
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Zajistí pro plugin Embed rajce zpětnou kompatibilitu s pluginem WP Rajče, takže galerie vložené pomocí pseudo-shortcodu [rajce:...] budou zpracovány a zobrazeny.
-Version: 1.2.2
+Version: 1.3
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0

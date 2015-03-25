@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.2.2
+Version: 1.3
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -60,7 +60,7 @@ class Rajce_embed {
     $thumb_default = get_option("rajce_embed_thumb_default", 'yes');
     $thumb_size_w  = get_option("rajce_embed_thumbnail_size_w", '');
     $thumb_size_h  = get_option("rajce_embed_thumbnail_size_h", '');
-    $thumb_crop    = get_option("rajce_embed_thumbnail_crop", '');
+    $thumb_crop    = get_option("rajce_embed_thumbnail_crop", 1);
     echo(
       '<input type="radio" name="rajce_embed_thumb_default" id="rajce_embed_thumb_default_yes" value="yes"' . ($thumb_default == 'yes' ? ' checked' : '') . '>'
       . __('Výchozí velikost, stejná jako pro nativní WordPress galerie; definováno nahoře na této stránce', 'rajce_embed')
@@ -78,9 +78,18 @@ class Rajce_embed {
       . '<script>jQuery(document).ready(function($){$("#rajce_embed_thumb_default_yes").click(function(){$("#rajce_embed_thumbnail_size").slideUp()});$("#rajce_embed_thumb_default_no").click(function(){$("#rajce_embed_thumbnail_size").slideDown()});});</script>'
     );
   }
+  
+  private static function crop_thumbs() {
+    $crop = get_option("thumbnail_crop", 1);
+    $thumb_default = get_option("rajce_embed_thumb_default", 'yes');
+    if ($thumb_default == 'no') {
+      $crop = get_option("rajce_embed_thumbnail_crop", $crop);
+    }
+    return ($crop == 1);
+  }
 
   static function enqueue_styles() {
-    if (current_theme_supports('html5', 'gallery') && get_option("thumbnail_crop", 1) != "") {
+    if (current_theme_supports('html5', 'gallery') && self::crop_thumbs()) {
       wp_enqueue_style('rajce-html5-gallery', plugins_url('css/html5-gallery.css', __FILE__));
     } else {
       wp_enqueue_style('rajce-dl-dt-gallery', plugins_url('css/dl-dt-gallery.css', __FILE__));
@@ -388,7 +397,19 @@ class Rajce_embed {
   }
 
   private static function options_thumb_size() {
-    return array(get_option("thumbnail_size_w", 150), get_option("thumbnail_size_h", 150));
+    $w = get_option("thumbnail_size_w", 150);
+    $h = get_option("thumbnail_size_h", 150);
+    $thumb_default = get_option("rajce_embed_thumb_default", 'yes');
+    if ($thumb_default == 'no') {
+      $thumb_size_w  = get_option("rajce_embed_thumbnail_size_w", $w);
+      $thumb_size_h  = get_option("rajce_embed_thumbnail_size_h", $h);
+      if (is_numeric($thumb_size_w))
+        $w = $thumb_size_w;
+      if (is_numeric($thumb_size_h))
+        $h = $thumb_size_h;
+    }
+    
+    return array($w, $h);
   }
 
   private static function prepend_html5_style() {
@@ -397,7 +418,7 @@ class Rajce_embed {
       $done = true;
       $html5 = current_theme_supports('html5', 'gallery');
       list($wp_thumb_size_w, $wp_thumb_size_h) = Rajce_embed::options_thumb_size();
-      if ($html5 && get_option("thumbnail_crop", 1) != "") {
+      if ($html5 && self::crop_thumbs()) {
         return "<style type='text/css'>
           div[class*=\"gallery-embed-rajce\"] .gallery-icon {
             width: {$wp_thumb_size_w}px;
