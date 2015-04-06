@@ -194,7 +194,7 @@ class Rajce_embed {
 
         } else {
           // we are embedding whole album
-           $omit_album_cover = (get_option(rajce_embed_omit_album_cover, '') != '') || in_array('omitalbumcover', array_map('strtolower', $attr));
+          $omit_album_cover = (get_option('rajce_embed_omit_album_cover', '') != '') || in_array('omitalbumcover', array_map('strtolower', $attr));
           $images = array();
           $as = $dom->getElementsByTagName('a');
           foreach ($as as $a) {
