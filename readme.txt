@@ -4,7 +4,7 @@ Donate link: http://www.honza.info
 Tags: gallery, image, images, embed, oembed
 Requires at least: 4.0
 Tested up to: 4.1
-Stable tag: 1.4
+Stable tag: 1.5
 License: WTFPL license applies
 
 Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
@@ -94,6 +94,7 @@ Pokud jste tedy dosavad používali plugin <em>WP Rajče</em>, deaktivujte ho a 
 == Changelog ==
 
 = 1.5 =
+* enhancement — gallery thumbnails can use the full source pictures, for higher quality
 * fix — error in omitting album cover
 = 1.4 =
 * enhancement — possibility to omit album cover image from the displayed gallery
