@@ -3,7 +3,7 @@
 Plugin Name: Rajce embed
 Plugin URI: http://wordpress.org/plugins/rajce-embed/
 Description: Embeds photos and photo-albums stored on rajce.net as native WordPress galleries
-Version: 1.5
+Version: 1.5.1
 Author: Honza Skypala
 Author URI: http://www.honza.info/
 License: WTFPL 2.0
@@ -12,7 +12,7 @@ License: WTFPL 2.0
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 class Rajce_embed {
-  const version = "1.5";
+  const version = "1.5.1";
 
   public function __construct() {
     register_activation_hook(__FILE__, array($this, 'activate'));
@@ -381,7 +381,7 @@ class Rajce_embed {
         list($target_width, $target_height, $orientation) = Rajce_embed::get_thumb_size($dom, $image_filename);
 
         $thumb_source = get_option("rajce_embed_thumbnail_source", 'thumbnail');
-        $thumb_url = $thumb_source == 'image' ? $img_url : str_replace('/images/', '/thumb/', $image_URL);
+        $thumb_url = $thumb_source == 'image' ? $image_URL : str_replace('/images/', '/thumb/', $image_URL);
 
         $link = in_the_loop() ? get_permalink() : $album_URL;
 
